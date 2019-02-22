@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Shop.Web.Data.Entities
+﻿namespace Shop.Web.Data.Entities
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class Product: IEntity
     {
         public int Id { get; set; }
@@ -32,5 +32,16 @@ namespace Shop.Web.Data.Entities
 
         public User User { get; set; }
 
+        public string ImageFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.ImageUrl))
+                {
+                    return null;
+                }
+                return $"http://localhost:50505{this.ImageUrl.Substring(1)}";
+            }
+        }
     }
 }
