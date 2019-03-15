@@ -1,11 +1,13 @@
 ﻿namespace Shop.Web.Controllers
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using Data;
     using Data.Entities;
     using Helpers;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Models;
@@ -13,13 +15,14 @@
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
-
         private readonly IUserHelper userHelper;
+        private readonly IHostingEnvironment hostingEnvironment;
 
-        public ProductsController(IProductRepository productRepository, IUserHelper userHelper)
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper, IHostingEnvironment hostingEnvironment)
         {
             this.productRepository = productRepository;
             this.userHelper = userHelper;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Products
@@ -62,14 +65,16 @@
 
                 if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
-                    path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Products", view.ImageFile.FileName);
-
+                    //path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Products", view.ImageFile.FileName);
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+                    path = Path.Combine(hostingEnvironment.WebRootPath, "images\\Products", file);
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/Products/{view.ImageFile.FileName}";
+                    path = $"~/images/Products/{file}";
                 }
 
                 // TODO: Pending to change to: this.User.Identity.Name
@@ -144,7 +149,9 @@
                     var path = view.ImageUrl;
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
-                        path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Products", view.ImageFile.FileName);
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+                        path = Path.Combine(hostingEnvironment.WebRootPath, "images\\Products", file);
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             await view.ImageFile.CopyToAsync(stream);
