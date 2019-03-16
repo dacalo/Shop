@@ -7,11 +7,13 @@
     using Data;
     using Data.Entities;
     using Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Models;
 
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
@@ -77,8 +79,7 @@
                     path = $"~/images/Products/{file}";
                 }
 
-                // TODO: Pending to change to: this.User.Identity.Name
-                view.User = await this.userHelper.GetUserByEmailAsync("jzuluaga55@gmail.com");
+                view.User = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 var product = this.ToProduct(view, path);
                 await this.productRepository.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
@@ -159,8 +160,7 @@
                         path = $"~/images/Products/{view.ImageFile.FileName}";
                     }
 
-                    // TODO: Pending to change to: this.User.Identity.Name
-                    view.User = await this.userHelper.GetUserByEmailAsync("jzuluaga55@gmail.com");
+                    view.User = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     var product = this.ToProduct(view, path);
                     await this.productRepository.UpdateAsync(product);
                 }
