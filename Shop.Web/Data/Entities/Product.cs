@@ -40,7 +40,7 @@
                 {
                     return null;
                 }
-                return $"http://localhost:50505{this.ImageUrl.Substring(1)}";
+                return $"http://10.1.39.5:92{this.ImageUrl.Substring(1)}";
             }
         }
     }
