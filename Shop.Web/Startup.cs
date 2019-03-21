@@ -29,6 +29,8 @@
         {
             services.AddIdentity<User, IdentityRole>(options =>
             {
+                options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequireDigit = false;
                 options.Password.RequiredUniqueChars = 0;
@@ -37,6 +39,7 @@
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
             })
+            .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication()
@@ -63,6 +66,7 @@
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

@@ -13,6 +13,8 @@ namespace Shop.Web.Data
 
         public DbSet<Country> Countries { get; set; }
 
+        public DbSet<City> Cities { get; set; }
+
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
@@ -29,7 +31,13 @@ namespace Shop.Web.Data
             builder.Entity<Product>()
                 .Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
-                
+            builder.Entity<OrderDetail>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+            builder.Entity<OrderDetailTemp>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
             //Deshabilitar el borrado en cascada
             var cascadeFKs = builder.Model
                 .G­etEntityTypes()

@@ -22,9 +22,11 @@
         public DateTime? LastPurchase { get; set; }
 
         [Display(Name = "Last Sale")]
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? LastSale { get; set; }
 
         [Display(Name = "Is Availabe?")]
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public bool IsAvailabe { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
