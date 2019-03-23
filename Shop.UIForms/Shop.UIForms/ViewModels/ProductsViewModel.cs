@@ -35,8 +35,14 @@
         private async void LoadProducts()
         {
             this.IsRefreshing = true;
-            //var response = await apiService.GetListAsync<Product>("https://shopzulu.azurewebsites.net", "/api", "/Products");
-            var response = await apiService.GetListAsync<Product>("http://10.1.39.5:92", "/api", "/Products");
+            var url = Application.Current.Resources["UrlAPI"].ToString();
+            var response = await this.apiService.GetListAsync<Product>(
+                url,
+                "/api",
+                "/Products",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Accept");

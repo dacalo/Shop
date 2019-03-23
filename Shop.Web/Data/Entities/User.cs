@@ -27,6 +27,9 @@
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{this.FirstName} {this.LastName}"; } }
 
+        [Display(Name = "Email Confirmed")]
+        public override bool EmailConfirmed { get => base.EmailConfirmed; set => base.EmailConfirmed = value; }
+        
         [NotMapped]
         [Display(Name = "Is Admin?")]
         public bool IsAdmin { get; set; }

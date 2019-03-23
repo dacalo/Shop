@@ -43,6 +43,7 @@
         Task RemoveUserFromRoleAsync(User user, string roleName);
 
         Task DeleteUserAsync(User user);
+               
     }
 
 }
