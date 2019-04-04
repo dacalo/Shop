@@ -19,9 +19,13 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectProductCommand}"/>
+                                </Grid.GestureRecognizers>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Image
                                 	Grid.Column="0"
@@ -45,6 +49,10 @@
                                         Text="{Binding Stock, StringFormat='Stock: {0:N2}'}"
                                         TextColor="Black"/>
                                 </StackLayout>
+                                <Image
+                                	Grid.Column="2"
+    	                            Source="ic_chevron_right">
+                                </Image>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

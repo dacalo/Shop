@@ -1,12 +1,15 @@
-﻿using GalaSoft.MvvmLight.Command;
-using Shop.Common.Models;
-using Shop.Common.Services;
-using Shop.UIForms.Views;
-using System.Windows.Input;
-using Xamarin.Forms;
-
-namespace Shop.UIForms.ViewModels
+﻿namespace Shop.UIForms.ViewModels
 {
+    using GalaSoft.MvvmLight.Command;
+    using Newtonsoft.Json;
+    using Common.Helpers;
+    using Common.Models;
+    using Common.Services;
+    using UIForms.Views;
+    using System.Windows.Input;
+    using Xamarin.Forms;
+    using Shop.UIForms.Helpers;
+
     public class LoginViewModel: BaseViewModel
     {
         private bool isRunning;
@@ -28,7 +31,15 @@ namespace Shop.UIForms.ViewModels
 
         public string Email { get; set; }
         public string Password { get; set; }
+        public bool IsRemember { get; set; }
+
         public ICommand LoginCommand => new RelayCommand(Login);
+
+        public ICommand RegisterCommand => new RelayCommand(this.Register);
+
+        public ICommand RememberPasswordCommand => new RelayCommand(this.RememberPassword);
+
+
         #endregion
 
         #region Constructor
@@ -38,7 +49,7 @@ namespace Shop.UIForms.ViewModels
             this.IsEnabled = true;
             this.Email = "jzuluaga55@gmail.com";
             this.Password = "123456";
-
+            this.IsRemember = true;
         }
         #endregion
 
@@ -47,13 +58,13 @@ namespace Shop.UIForms.ViewModels
         {
             if (string.IsNullOrEmpty(Email))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "You most enter an email.", "Accept");
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, Languages.EmailMessage, Languages.Accept);
                 return;
             }
 
             if (string.IsNullOrEmpty(Password))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "You most enter an password.", "Accept");
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, Languages.PasswordError, Languages.Accept);
                 return;
             }
 
@@ -74,19 +85,38 @@ namespace Shop.UIForms.ViewModels
 
             if (!response.IsSuccess)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Email or password incorrect.", "Accept");
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, Languages.LoginError, Languages.Accept);
                 return;
             }
 
             var token = (TokenResponse)response.Result;
             var mainViewModel = MainViewModel.GetInstance();
             mainViewModel.Token = token;
-            mainViewModel.Products = new ProductsViewModel();
             mainViewModel.UserEmail = this.Email;
-            mainViewModel.UserPassword = this.Password;
+            mainViewModel.Products = new ProductsViewModel();
+
+            Settings.IsRemember = this.IsRemember;
+            Settings.UserEmail = this.Email;
+            Settings.UserPassword = this.Password;
+            Settings.Token = JsonConvert.SerializeObject(token);
+
             Application.Current.MainPage = new MasterPage();
             //await Application.Current.MainPage.Navigation.PushAsync(new ProductsPage());
         }
+
+        private async void Register()
+        {
+            MainViewModel.GetInstance().Register = new RegisterViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+        }
+
+        private async void RememberPassword()
+        {
+            MainViewModel.GetInstance().RememberPassword = new RememberPasswordViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new RememberPasswordPage());
+        }
+
+
         #endregion
 
     }

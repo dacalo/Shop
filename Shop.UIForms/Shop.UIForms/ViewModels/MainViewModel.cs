@@ -18,6 +18,11 @@
         public string UserEmail { get; set; }
         public string UserPassword { get; set; }
         public AddProductViewModel AddProduct { get; set; }
+        public EditProductViewModel EditProduct { get; set; }
+        public RegisterViewModel Register { get; set; }
+        public RememberPasswordViewModel RememberPassword { get; set; }
+
+
 
         public MainViewModel()
         {
