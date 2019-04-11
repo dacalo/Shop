@@ -8,9 +8,10 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class MainViewModel
+    public class MainViewModel : BaseViewModel
     {
         private static MainViewModel instance;
+        private User user;
         public LoginViewModel Login { get; set; }
         public ProductsViewModel Products { get; set; }
         public TokenResponse Token { get; set; }
@@ -21,7 +22,15 @@
         public EditProductViewModel EditProduct { get; set; }
         public RegisterViewModel Register { get; set; }
         public RememberPasswordViewModel RememberPassword { get; set; }
+        public ProfileViewModel Profile { get; set; }
+        public ChangePasswordViewModel ChangePassword { get; set; }
 
+
+        public User User
+        {
+            get => this.user;
+            set => this.SetValue(ref this.user, value);
+        }
 
 
         public MainViewModel()
@@ -51,6 +60,13 @@
                     Icon = "ic_perm_device_information",
                     PageName = "AboutPage",
                     Title = "About"
+                },
+
+                new Menu
+                {
+                    Icon = "ic_person",
+                    PageName = "ProfilePage",
+                    Title = "Modify User"
                 },
 
                 new Menu

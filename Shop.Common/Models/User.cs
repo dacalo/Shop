@@ -39,7 +39,7 @@
         public Guid ConcurrencyStamp { get; set; }
 
         [JsonProperty("phoneNumber")]
-        public object PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [JsonProperty("phoneNumberConfirmed")]
         public bool PhoneNumberConfirmed { get; set; }
@@ -55,5 +55,14 @@
 
         [JsonProperty("accessFailedCount")]
         public long AccessFailedCount { get; set; }
+
+        [JsonProperty("cityId")]
+        public int CityId { get; set; }
+
+        [JsonProperty("address")]
+        public string Address { get; set; }
+
+        public string FullName { get { return $"{this.FirstName} {this.LastName}"; } }
+
     }
 }
